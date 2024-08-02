@@ -1,0 +1,42 @@
+# Node modules
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+
+# Operating system specific files
+.DS_Store
+thumbs.db
+
+# Dependency directories
+.yarn/cache/
+.pnp.*
+
+# Build directories
+build/
+dist/
+
+# Coverage directory
+coverage/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+
+# IDE and editor files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Miscellaneous
+.npm/
+.cache/
