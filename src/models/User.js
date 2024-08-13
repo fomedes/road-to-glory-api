@@ -6,12 +6,13 @@ const teamsSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Team'
   },
-  teamName: String,
-  teamCrest: String,
+  clubName: String,
+  clubCrest: String,
   communityId: {
     type: Schema.Types.ObjectId,
     ref: 'Community'
-  }
+  },
+  communityName: String
 }, { _id: false })
 
 

@@ -12,6 +12,7 @@ import errorHandler from './middlewares/errorHandler.js';
 import clubRouter from './routes/clubRoutes.js';
 import communityRouter from './routes/communityRoutes.js';
 import loginRouter from './routes/loginRoutes.js';
+import marketRouter from './routes/marketRoutes.js';
 import newsRouter from './routes/newsRoutes.js';
 import seasonRouter from './routes/seasonRoutes.js';
 import teamRouter from './routes/teamRoutes.js';
@@ -36,6 +37,7 @@ app.use('/api/seasons', seasonRouter);
 app.use('/api/teams', teamRouter);
 app.use('/api/tournaments', tournamentRouter);
 app.use('/api/users', userRouter);
+app.use('/api/market', marketRouter);
 
 app.use(errorHandler);
 

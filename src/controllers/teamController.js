@@ -11,6 +11,7 @@ const createTeam = async (req, res) => {
       clubName: teamData.club_name,
       clubCrest: teamData.club_crest,
       communityId: teamData.community_id,
+      communityName: teamData.community_name,
       userId: teamData.user_id,
       budget: teamData.budget,
     });
@@ -19,9 +20,10 @@ const createTeam = async (req, res) => {
 
     const userTeam = {
       teamId: newTeam._id,
-      teamName: newTeam.clubName,
-      teamCrest: newTeam.clubCrest,
+      clubName: newTeam.clubName,
+      clubCrest: newTeam.clubCrest,
       communityId: newTeam.communityId,
+      communityName: newTeam.communityName,
     }
     
     await userService.addTeamToUser(teamData.user_id, userTeam);
@@ -33,13 +35,28 @@ const createTeam = async (req, res) => {
   }
 };
 
+const getTeamById = async (req, res) => {
+  try {
+    const teamId = req.params.team_id;
+    const team = await Team.findById(teamId);
+
+    if (!team) {
+      return res.status(404).json({ error: 'Team not found' });
+    }
+
+    res.json(team);
+  } catch (error) {
+    res.status(500).json({ error: 'Error retrieving team data' });
+  }
+};
+
 const getTeamByUserId = async (req, res) => {
   try {
     const userId = req.params.user_id;
-  const user = await User.findById(userId);
+    const user = await User.findById(userId);
 
-  if (!user) {
-    return res.status(404).json({ error: 'User not found' });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
   }
 
   const teams = user.teams;
@@ -54,4 +71,4 @@ const getTeamByUserId = async (req, res) => {
 }
 };
 
-export default { createTeam, getTeamByUserId };
+export default { createTeam, getTeamById, getTeamByUserId };

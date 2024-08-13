@@ -6,6 +6,12 @@ const playerPriceSchema = new Schema({
   price: { type: Number, required: true }
 }, { _id: false });
 
+const registeredPlayers = new Schema({
+  playerId: String,
+  clubCrest: String,
+  bidAmount: Number,
+}, { _id: false });
+
 const marketSchema = new Schema({
   randomPlayers: { type: Boolean, required: true },
   minOvr: { 
@@ -87,10 +93,7 @@ const communitySchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Club'
   }],
-  registeredPlayers: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Players'
-  }],
+  registeredPlayers: [registeredPlayers],
   tournaments: [{
     type: Schema.Types.ObjectId,
     ref: 'Tournament'

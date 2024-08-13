@@ -26,13 +26,14 @@ const teamSchema = new Schema({
     ref: 'Community',
     required: true
   },
+  communityName: { type: String, required: true },
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'Community',
     required: true
   },
   budget: { type: Number, required: true },
-  players: [{ type: Number }],
+  players: [{ type: String }],
   trophies: [{
     type: Schema.Types.ObjectId,
     ref: 'Trophy'

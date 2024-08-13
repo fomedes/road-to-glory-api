@@ -2,17 +2,27 @@ import { Schema, model } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
 const newsSchema = new Schema({
-  name: String,
-  community: {
+  message: String,
+  communityId: {
     type: Schema.Types.ObjectId,
     ref: 'Community',
     required: true
   },
-  tournaments: [{
+  tournamentId: {
     type: Schema.Types.ObjectId,
     ref: 'Tournament'
-  }],
-
+  },
+  clubCrest: String,
+  type: { 
+    type: String, 
+    required: true, 
+    enum: ['newUser', 'newTournament', 'transfer']
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  // transferDetails: TransferDetails,
 });
 
 newsSchema.set('toJSON', {
