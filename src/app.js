@@ -1,10 +1,11 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
 import { ExpressAuth } from '@auth/express';
 import Google from '@auth/express/providers/google';
 import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
 import express from 'express';
+dotenv.config({
+  path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env',
+});
 
 import { corsMiddleware } from './middlewares/cors.js';
 import errorHandler from './middlewares/errorHandler.js';
