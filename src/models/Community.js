@@ -13,6 +13,7 @@ const registeredPlayers = new Schema({
 }, { _id: false });
 
 const marketSchema = new Schema({
+  playerDatabase: String,
   randomPlayers: { type: Boolean, required: true },
   minOvr: { 
     type: Number, 

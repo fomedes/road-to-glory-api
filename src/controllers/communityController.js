@@ -80,4 +80,19 @@ const getRegisteredPlayers = async (req, res) => {
   }
 }
 
-export default {createCommunity, getAllCommunities, getUserCommunities, getRegisteredPlayers}
+const getMarketConfig = async (req, res) => {
+  try {
+    const community = await Community.findById(req.params.communityId);
+
+    if (!community) {
+      return res.status(404).json({ error: 'Community not found' });
+    }
+
+    const marketConfig = community.market;
+    res.json(marketConfig);
+  } catch (error) {
+    res.status(500).json({ error: 'Error retrieving market configuration' });
+  }
+}
+
+export default {createCommunity, getAllCommunities, getUserCommunities, getRegisteredPlayers, getMarketConfig}
