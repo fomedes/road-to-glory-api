@@ -8,21 +8,44 @@ const newsSchema = new Schema({
     ref: 'Community',
     required: true
   },
+  type: { 
+    type: String, 
+    required: true, 
+    enum: ['newUser', 'newTournament', 'transferPurchase', 'transferSale']
+  },
+
+  // New Tournament details
   tournamentId: {
     type: Schema.Types.ObjectId,
     ref: 'Tournament'
   },
-  clubCrest: String,
-  type: { 
-    type: String, 
-    required: true, 
-    enum: ['newUser', 'newTournament', 'transfer']
+
+  // Transfer details
+  // transferDetails: TransferDetails,
+  buyerId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
   },
+  buyerName: String,
+  buyerCrest: String,
+  sellerId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  sellerName: String,
+  sellerCrest: String,
+  playerId: String,
+  playerName: String,
+  transferAmount: Number,
+
+  //New user details
+  clubName: String,
+  clubCrest: String,
+  clubId: String,
   createdAt: {
     type: Date,
     default: Date.now
   },
-  // transferDetails: TransferDetails,
 });
 
 newsSchema.set('toJSON', {

@@ -10,21 +10,24 @@ const createNews = async (req,res) => {
           return res.status(404).json({ error: "Community not found" });
       }
 
-      const messageTemplates = {
-        transfer: (body) => {
-          const formattedAmount = new Intl.NumberFormat('es-ES', { 
-            style: 'currency', 
-            currency: 'EUR',
-            minimumFractionDigits: 0, 
-            maximumFractionDigits: 0 
-          }).format(body.bidAmount);
-          return `${body.buyerName} ha fichado a ${body.playerName} por ${formattedAmount}`;
-        },
+      const formattedAmount = new Intl.NumberFormat('es-ES', { 
+        style: 'currency', 
+        currency: 'EUR',
+        minimumFractionDigits: 0, 
+        maximumFractionDigits: 0 
+      }).format(req.body.transferAmount);
 
-          newUser: (body) => `${body.userName} es el nuevo entrenador de ${body.clubName}`,
-          
-          newTournament: (body) => `Un nuevo torneo ha sido creado. Inscribete para participar: ${body.tournamentId}.`,
-        };
+      const messageTemplates = {
+        
+        transferPurchase: (body) => `${body.buyerName} ha fichado a ${body.playerName} por ${formattedAmount}`,
+        
+
+        transferSale: (body) => `${body.sellerName} ha liberado a ${body.playerName} por ${formattedAmount}`,
+
+        newUser: (body) => `${body.userName} es el nuevo entrenador de ${body.clubName}`,
+        
+        newTournament: (body) => `Un nuevo torneo ha sido creado. Inscribete para participar: ${body.tournamentId}.`,
+      };
         
         const _createMessage = () => {
           const { type, ...body } = req.body;
@@ -33,7 +36,6 @@ const createNews = async (req,res) => {
         };
 
         const transferDetails = {
-          transferType: req.body.transferType,
           buyerId: req.body.buyerId,
           buyerName: req.body.buyerName,
           buyerCrest: req.body.buyerCrest,
@@ -45,16 +47,25 @@ const createNews = async (req,res) => {
           transferAmount: req.body.transferAmount,
         }
 
+        const newUserDetails = {
+          clubName: req.body.clubName,
+          clubCrest: req.body.clubCrest,
+        }
+
+        const newTournamentData = {
+          tournamentId: req.body.tournamentId,
+        }
+
         const newsData = {
           message: _createMessage(),
           communityId: req.body.communityId,
-          tournamentId: req.body.tournamentId,
-          clubCrest: req.body.clubCrest,
           type: req.body.type,
           createdAt: req.body.createdAt || Date.now(),
         }
+        console.log('Controller',newsData);
 
-        const news = new News({ ...newsData, transferDetails });
+        const news = new News({ ...newsData, ...transferDetails, ...newUserDetails });
+
 
         await news.save();
 

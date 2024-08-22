@@ -33,7 +33,7 @@ const marketSchema = new Schema({
     },
     max: [100, 'maxOvr must be a natural number']
   },
-    bidWindow: { 
+  bidWindow: { 
     type: String, 
     required: true, 
     enum: ['instant', '24', '48', '72'] 

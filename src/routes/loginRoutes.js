@@ -24,12 +24,12 @@ router.post('/', async (req, res) => {
     }
 
     // Generate an access token
-    const token = jwt.sign({ user_id: user.id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
 
     // Respond with the access token
-    res.json({ username:user.username ,user_id: user.id, access_token: token });
+    res.json({ username:user.username ,userId: user.id, accessToken: token });
     
   } catch (error) {
     console.error('Authentication Error:', error);
