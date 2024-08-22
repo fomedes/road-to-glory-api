@@ -1,33 +1,36 @@
 import Team from '../models/Team.js';
 import User from '../models/User.js';
 import communityService from '../services/communityService.js';
+import newsService from '../services/newsService.js';
 import userService from '../services/userService.js';
 
 const createTeam = async (req, res) => {
+  const { team, newsDetails } = req.body;
   try {
-    const teamData = req.body;
     const newTeam = new Team({
-      clubId: teamData.club_id,
-      clubName: teamData.club_name,
-      clubCrest: teamData.club_crest,
-      communityId: teamData.community_id,
-      communityName: teamData.community_name,
-      userId: teamData.user_id,
-      budget: teamData.budget,
+      clubId: team.clubId,
+      clubName: team.clubName,
+      clubCrest: team.clubCrest,
+      communityId: team.communityId,
+      communityName: team.communityName,
+      userId: team.userId,
+      budget: team.budget,
     });
 
-    await newTeam.save();
-
     const userTeam = {
-      teamId: newTeam._id,
+      teamId: newTeam.id,
       clubName: newTeam.clubName,
       clubCrest: newTeam.clubCrest,
       communityId: newTeam.communityId,
       communityName: newTeam.communityName,
     }
-    
-    await userService.addTeamToUser(teamData.user_id, userTeam);
+
+    await newTeam.save();
+    await userService.addTeamToUser(team.userId, userTeam);
     await communityService.joinCommunity(newTeam.userId, newTeam.communityId);
+
+    newsDetails.teamId = newTeam.id;
+    await newsService.createNews(newsDetails);
 
     res.status(201).json(newTeam);
   } catch (error) {

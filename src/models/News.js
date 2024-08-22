@@ -36,12 +36,13 @@ const newsSchema = new Schema({
   sellerCrest: String,
   playerId: String,
   playerName: String,
+  playerImage: String,
   transferAmount: Number,
 
   //New user details
   clubName: String,
   clubCrest: String,
-  clubId: String,
+  teamId: String,
   createdAt: {
     type: Date,
     default: Date.now

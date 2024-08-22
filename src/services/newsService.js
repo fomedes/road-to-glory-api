@@ -2,7 +2,6 @@ import Community from "../models/Community.js";
 import News from "../models/News.js";
 
 const createNews = async (newsData) => {
-  console.log('Service:', newsData);
   try {
       const community = await Community.findById(newsData.communityId);
 
@@ -42,12 +41,14 @@ const createNews = async (newsData) => {
           sellerCrest: newsData.sellerCrest,
           playerId: newsData.playerId,
           playerName: newsData.playerName,
+          playerImage: newsData.playerImage,
           transferAmount: newsData.transferAmount,
       };
 
       const newUserDetails = {
           clubName: newsData.clubName,
           clubCrest: newsData.clubCrest,
+          teamId: newsData.teamId,
       };
 
       const newTournamentData = {
