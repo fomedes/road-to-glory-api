@@ -40,7 +40,7 @@ const createTeam = async (req, res) => {
 
 const getTeamById = async (req, res) => {
   try {
-    const teamId = req.params.team_id;
+    const teamId = req.params.teamId;
     const team = await Team.findById(teamId);
 
     if (!team) {
@@ -55,7 +55,7 @@ const getTeamById = async (req, res) => {
 
 const getTeamByUserId = async (req, res) => {
   try {
-    const userId = req.params.user_id;
+    const userId = req.params.userId;
     const user = await User.findById(userId);
 
     if (!user) {

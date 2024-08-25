@@ -6,10 +6,18 @@ const router = express.Router();
 
 router.post('/create', teamController.createTeam);
 
-router.get('/team/:team_id', teamController.getTeamById);
+router.get('/team/:teamId', teamController.getTeamById);
 
-router.get('/user/:user_id', teamController.getTeamByUserId);
+router.get('/user/:userId', teamController.getTeamByUserId);
 
 router.get('/players/:teamId', playerController.getTeamPlayers);
+
+router.get('/favouritePlayers/:teamId', playerController.getFavouritePlayers);
+
+router.post('/addFavouritePlayer/:teamId/:playerId', playerController.addPlayerToFavourites);
+
+router.post('/removeFavouritePlayer/:teamId/:playerId', playerController.removePlayerFromFavourites);
+
+
 
 export default router;
