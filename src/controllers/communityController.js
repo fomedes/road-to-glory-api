@@ -65,6 +65,22 @@ const getUserCommunities = async (req, res) => {
   }
 }
 
+const getCommunityTeams = async (req, res) => {
+  try {
+    const community = await Community.findById(req.params.communityId);
+
+    if (!community) {
+      return res.status(404).json({ error: 'Community not found' });
+    }
+
+    const registeredTeams = community.teams;
+    const communityTeams = await Team.find({ _id: { $in: registeredTeams } });
+    res.json(communityTeams);
+  } catch (error) {
+    res.status(500).json({ error: 'Error retrieving registered teams' });
+  }
+}
+
 const getRegisteredPlayers = async (req, res) => {
   try {
     const community = await Community.findById(req.params.communityId);
@@ -95,4 +111,4 @@ const getMarketConfig = async (req, res) => {
   }
 }
 
-export default {createCommunity, getAllCommunities, getUserCommunities, getRegisteredPlayers, getMarketConfig}
+export default {createCommunity, getAllCommunities, getUserCommunities, getCommunityTeams, getRegisteredPlayers, getMarketConfig}
