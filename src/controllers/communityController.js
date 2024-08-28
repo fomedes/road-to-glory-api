@@ -111,4 +111,4 @@ const getMarketConfig = async (req, res) => {
   }
 }
 
-export default {createCommunity, getAllCommunities, getUserCommunities, getCommunityTeams, getRegisteredPlayers, getMarketConfig}
+export default {createCommunity, getAllCommunities, getUserCommunities, getRegisteredPlayers, getMarketConfig}
