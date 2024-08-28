@@ -18,7 +18,6 @@ const bidPlayer = async (req, res) => {
     }
     buyerTeam.players.push(req.body.playerId);
     buyerTeam.budget -= req.body.transferAmount;
-    await buyerTeam.save();
 
 // Add player to Community 
     const community = await Community.findById(req.body.communityId);
@@ -32,15 +31,18 @@ const bidPlayer = async (req, res) => {
         clubCrest: req.body.buyerCrest,
     }
     community.registeredPlayers.push(playerToAdd)
-    await community.save();
+    
 
-    // Create news
+    // // Create news
     await newsService.createNews(req.body);
+    await buyerTeam.save();
+    await community.save();
 
 
     res.status(200).json({ message: 'Player purchased successfully' });
   } catch (error) {
-    res.status(500).json({ message: 'Failed to purchase player', error });
+    console.error("Error during player purchase:", error); // Log the detailed error
+    res.status(500).json({ message: 'Failed to purchase player', error: error.message });
   }
  
 }

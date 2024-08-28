@@ -1,4 +1,5 @@
 import Community from "../models/Community.js";
+import Team from "../models/Team.js";
 
 const createCommunity = async (req, res) => {
   try {
@@ -72,7 +73,6 @@ const getCommunityTeams = async (req, res) => {
     if (!community) {
       return res.status(404).json({ error: 'Community not found' });
     }
-
     const registeredTeams = community.teams;
     const communityTeams = await Team.find({ _id: { $in: registeredTeams } });
     res.json(communityTeams);

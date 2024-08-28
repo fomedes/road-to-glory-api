@@ -51,6 +51,14 @@ teamSchema.set('toJSON', {
   }
 });
 
+teamSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
+})
+
 teamSchema.plugin(uniqueValidator);
 
 const Team = model('Team', teamSchema);

@@ -4,7 +4,6 @@ import News from "../models/News.js";
 const createNews = async (newsData) => {
   try {
       const community = await Community.findById(newsData.communityId);
-
       if (!community) {
           throw new Error("Community not found");
       }
@@ -63,7 +62,6 @@ const createNews = async (newsData) => {
       };
 
       const news = new News({ ...newsDefault, ...transferDetails, ...newUserDetails });
-
       await news.save();
 
       community.news.push(news.id);

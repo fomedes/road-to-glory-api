@@ -90,10 +90,7 @@ const communitySchema = new Schema({
   market: marketSchema,
 
   // Competition Activity
-  registeredClubs: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Club'
-  }],
+  registeredClubs: [String],
   registeredPlayers: [registeredPlayers],
   tournaments: [{
     type: Schema.Types.ObjectId,
