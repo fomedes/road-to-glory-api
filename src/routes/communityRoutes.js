@@ -16,6 +16,6 @@ router.get('/registeredPlayers/:communityId', communityController.getRegisteredP
 
 router.get('/marketConfig/:communityId', communityController.getMarketConfig);
 
-// router.get('/communityTeams/:communityId', communityController.getCommunityTeams);
+router.get('/communityTeams/:communityId', communityController.getCommunityTeams);
 
 export default router;
