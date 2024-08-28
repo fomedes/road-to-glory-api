@@ -1,4 +1,5 @@
 import Community from "../models/Community.js";
+import Team from "../models/Team.js";
 
 const createCommunity = async (req, res) => {
   try {
@@ -75,7 +76,10 @@ const getCommunityTeams = async (req, res) => {
 
     const registeredTeams = community.teams;
     const communityTeams = await Team.find({ _id: { $in: registeredTeams } });
-    res.json(communityTeams);
+
+    const filteredTeams = communityTeams.filter(team => team.clubName !== 'Free Agents');
+
+    res.json(filteredTeams);
   } catch (error) {
     res.status(500).json({ error: 'Error retrieving registered teams' });
   }
