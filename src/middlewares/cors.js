@@ -3,6 +3,7 @@ import cors from 'cors';
 const ACCEPTED_ORIGINS = [
   'http://localhost:3000',
   'http://localhost:4200',
+  'http://192.168.1.16:4200',
   'https://road2glory.netlify.app',
 ]
 export const corsMiddleware = ({ acceptedOrigins = ACCEPTED_ORIGINS } = {}) => cors({
