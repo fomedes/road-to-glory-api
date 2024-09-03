@@ -42,8 +42,9 @@ app.use('/api/market', marketRouter);
 
 app.use(errorHandler);
 
+const IP = process.env.HOST;
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(PORT, IP, () => {
+  console.log(`Server is running on http://${IP}:${PORT}`);
 });
