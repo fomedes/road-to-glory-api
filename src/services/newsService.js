@@ -16,9 +16,9 @@ const createNews = async (newsData) => {
       }).format(newsData.transferAmount);
 
       const messageTemplates = {
-          transferPurchase: (body) => `${body.buyerName} ha fichado a ${body.playerName} por ${formattedAmount}`,
+          transferPurchase: (body) => `${body.buyerName} ha fichado a ${body.playerName}`,
 
-          transferSale: (body) => `${body.sellerName} ha liberado a ${body.playerName} por ${formattedAmount}`,
+          transferSale: (body) => `${body.sellerName} ha liberado a ${body.playerName}`,
 
           newUser: (body) => `${body.userName} es el nuevo entrenador de ${body.clubName}`,
           
