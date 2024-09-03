@@ -10,7 +10,7 @@ const getTeamPlayers = async (req, res) => {
     }
 }
 
-const getFavouritePlayers = async (req, res) => {
+const getFavoritePlayers = async (req, res) => {
     try {
         const team = await Team.findById(req.params.teamId);
         const favouritePlayers = team.favouritePlayers;
@@ -20,7 +20,7 @@ const getFavouritePlayers = async (req, res) => {
     }
 }
 
-const addPlayerToFavourites = async (req, res) => {
+const addPlayerToFavorites = async (req, res) => {
     try {
         const team = await Team.findById(req.params.teamId);
         const player = req.params.playerId;
@@ -32,7 +32,7 @@ const addPlayerToFavourites = async (req, res) => {
     }
 }
 
-const removePlayerFromFavourites = async (req, res) => {
+const removePlayerFromFavorites = async (req, res) => {
     try {
         const team = await Team.findById(req.params.teamId);
         const player = req.params.playerId;
@@ -45,5 +45,5 @@ const removePlayerFromFavourites = async (req, res) => {
 }
 
 export default {
-    getTeamPlayers, getFavouritePlayers, addPlayerToFavourites, removePlayerFromFavourites
+    getTeamPlayers, getFavoritePlayers, addPlayerToFavorites, removePlayerFromFavorites
 };

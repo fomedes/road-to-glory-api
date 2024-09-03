@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.post('/bid', MarketController.bidPlayer);
 
-router.post('/releaseplayer', MarketController.releasePlayer)
+router.post('/releasePlayer', MarketController.releasePlayer)
 
 export default router;

@@ -12,11 +12,11 @@ router.get('/user/:userId', teamController.getTeamByUserId);
 
 router.get('/players/:teamId', playerController.getTeamPlayers);
 
-router.get('/favouritePlayers/:teamId', playerController.getFavouritePlayers);
+router.get('/favoritePlayers/:teamId', playerController.getFavoritePlayers);
 
-router.post('/addFavouritePlayer/:teamId/:playerId', playerController.addPlayerToFavourites);
+router.post('/addFavoritePlayer/:teamId/:playerId', playerController.addPlayerToFavorites);
 
-router.post('/removeFavouritePlayer/:teamId/:playerId', playerController.removePlayerFromFavourites);
+router.post('/removeFavoritePlayer/:teamId/:playerId', playerController.removePlayerFromFavorites);
 
 
 
