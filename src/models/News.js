@@ -11,7 +11,13 @@ const newsSchema = new Schema({
   type: { 
     type: String, 
     required: true, 
-    enum: ['newUser', 'newTournament', 'transferPurchase', 'transferSale']
+    enum: [
+      'newUser', 
+      'newTournament', 
+      'transferPurchase', 
+      'transferSale', 
+      'newSeason'
+    ]
   },
 
   // New Tournament details

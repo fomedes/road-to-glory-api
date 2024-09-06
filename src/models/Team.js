@@ -34,7 +34,7 @@ const teamSchema = new Schema({
   },
   budget: { type: Number, required: true },
   players: [{ type: String }],
-  favouritePlayers: [{ type: String }],
+  favoritePlayers: [{ type: String }],
   trophies: [{
     type: Schema.Types.ObjectId,
     ref: 'Trophy'

@@ -50,22 +50,25 @@ const communitySchema = new Schema({
   // Community Bio
   name: String,
   isPrivate: { type: Boolean, default: false },
-  password: String,
-  // password: {
-  //   type: String,
-  //   required: function() {
-  //     return this.isPrivate;
-  //   },
-  //   validate: {
-  //     validator: function(v) {
-  //       if (this.isPrivate) {
-  //         return v && v.length > 0;
-  //       }
-  //       return true;
-  //     },
-  //     message: 'Password is required when the community is private.'
-  //   }
-  // },
+  password: {
+    type: String,
+    required: function() {
+      return this.isPrivate;
+    },
+    validate: {
+      validator: function(v) {
+        if (this.isPrivate) {
+          return v && v.length > 0;
+        }
+        return true;
+      },
+      message: 'Password is required when the community is private.'
+    }
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
   admins: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
@@ -79,6 +82,9 @@ const communitySchema = new Schema({
     ref: 'Team'
   }],
   communityPlatforms: [String],
+  maxUsers: {type: Number, default: 0},
+  maxPlayers: {type: Number, default: 0},
+  minPlayers: {type: Number, default: 0},
 
 
   // Starting Conditions
@@ -96,6 +102,10 @@ const communitySchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Tournament'
   }],
+  currentSeason: {
+    type: Schema.Types.ObjectId,
+    ref: 'Season'
+  },
   seasons: [{
     type: Schema.Types.ObjectId,
     ref: 'Season'
@@ -112,6 +122,7 @@ communitySchema.set('toJSON', {
     returnedObject.id = returnedObject._id
     delete returnedObject._id
     delete returnedObject.__v
+    delete returnedObject.password
   }
 })
 

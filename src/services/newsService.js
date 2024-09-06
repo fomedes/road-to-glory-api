@@ -2,27 +2,30 @@ import Community from "../models/Community.js";
 import News from "../models/News.js";
 
 const createNews = async (newsData) => {
+
   try {
       const community = await Community.findById(newsData.communityId);
       if (!community) {
           throw new Error("Community not found");
       }
-
-      const formattedAmount = new Intl.NumberFormat('es-ES', { 
-          style: 'currency', 
-          currency: 'EUR',
-          minimumFractionDigits: 0, 
-          maximumFractionDigits: 0 
-      }).format(newsData.transferAmount);
+      console.log('community', community);
+    //   const formattedAmount = new Intl.NumberFormat('es-ES', { 
+    //       style: 'currency', 
+    //       currency: 'EUR',
+    //       minimumFractionDigits: 0, 
+    //       maximumFractionDigits: 0 
+    //   }).format(newsData.transferAmount);
 
       const messageTemplates = {
           transferPurchase: (body) => `${body.buyerName} ha fichado a ${body.playerName}`,
 
           transferSale: (body) => `${body.sellerName} ha liberado a ${body.playerName}`,
 
-          newUser: (body) => `${body.userName} es el nuevo entrenador de ${body.clubName}`,
+          newUser: (body) => `${body.username} es el nuevo entrenador de ${body.clubName}`,
           
           newTournament: (body) => `Un nuevo torneo ha sido creado. Inscribete para participar: ${body.tournamentId}.`,
+
+          newSeason: (body) => `¡Empieza la Temporada ${body.seasonNumber}!`,     
       };
       
       const _createMessage = () => {
@@ -67,7 +70,6 @@ const createNews = async (newsData) => {
       community.news.push(news.id);
 
       await community.save();
-
       return news; // Return the created news document
   } catch (error) {
       throw new Error(error.message);

@@ -2,11 +2,13 @@ import { Schema, model } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
 const seasonSchema = new Schema({
-  name: String,
+  seasonName: String,
+  seasonNumber: {type: Number, required: true, default: 1},
+  startDate: { type: Date, default: Date.now },
+  endDate: { type: Date },
   community: {
     type: Schema.Types.ObjectId,
     ref: 'Community',
-    required: true
   },
   tournaments: [{
     type: Schema.Types.ObjectId,

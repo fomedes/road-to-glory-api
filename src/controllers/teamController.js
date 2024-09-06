@@ -5,7 +5,7 @@ import newsService from '../services/newsService.js';
 import userService from '../services/userService.js';
 
 const createTeam = async (req, res) => {
-  const { team, newsDetails } = req.body;
+  const team = req.body;
   try {
     const newTeam = new Team({
       clubId: team.clubId,
@@ -17,6 +17,8 @@ const createTeam = async (req, res) => {
       budget: team.budget,
     });
 
+    const user = await User.findById(team.userId);
+
     const userTeam = {
       teamId: newTeam.id,
       clubName: newTeam.clubName,
@@ -25,12 +27,20 @@ const createTeam = async (req, res) => {
       communityName: newTeam.communityName,
     }
 
+    const newsData = {
+      teamId: newTeam.id,
+      username: user.username,
+      communityId: newTeam.communityId,
+      clubName: newTeam.clubName,
+      clubCrest: newTeam.clubCrest,
+      communityName: newTeam.communityName,
+      type: 'newUser'
+    }
+
+    await newsService.createNews(newsData);
     await newTeam.save();
     await userService.addTeamToUser(team.userId, userTeam);
     await communityService.joinCommunity(newTeam.userId, newTeam.communityId);
-
-    newsDetails.teamId = newTeam.id;
-    await newsService.createNews(newsDetails);
 
     res.status(201).json(newTeam);
   } catch (error) {

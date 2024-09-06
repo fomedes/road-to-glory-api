@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
 import Community from "../models/Community.js";
+import Season from '../models/Season.js';
 import Team from "../models/Team.js";
+import newsService from '../services/newsService.js';
 
 
 const createCommunity = async (req, res) => {
@@ -8,6 +10,11 @@ const createCommunity = async (req, res) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
       
     const communityData = req.body
+
+    const newSeason = new Season();
+
+    const firstSeason = await newSeason.save();
+
     const newCommunity = new Community({
       // Community Bio
       id: communityData.id,
@@ -36,7 +43,8 @@ const createCommunity = async (req, res) => {
       registeredClubs: communityData.registeredClubs,
       registeredPlayers: communityData.registeredPlayers,
       tournaments: communityData.tournaments,
-      seasons: communityData.seasons,
+      seasons: [firstSeason._id],
+      currentSeason: firstSeason._id,
       news: communityData.news
   });
       await newCommunity.save();
@@ -46,9 +54,10 @@ const createCommunity = async (req, res) => {
   }
 }
 
-const getCommunityInfo = async (req, res) => {
+const getCommunityData = async (req, res) => {
   try {
-    const community = await Community.findById(req.params.communityId).select('name admins teams news');
+    const community = await Community.findById(req.params.communityId).populate('currentSeason')
+    .exec();
     if (!community) {
       return res.status(404).json({ error: 'Community not found' });
     }
@@ -152,4 +161,57 @@ const getCommunityAccess = async (req, res) => {
   }
 }
 
-export default {getCommunityAccess, createCommunity, getCommunityInfo, getAllCommunities, getUserCommunities, getCommunityTeams, getRegisteredPlayers, getMarketConfig}
+const advanceSeason = async (req, res) => {
+  try {
+    const community = await Community.findById(req.params.communityId);
+
+    if (!community) {
+      return res.status(404).json({ error: 'Community not found' });
+    }
+
+    const seasonToEnd = await Season.findById(community.currentSeason)
+
+    if (!seasonToEnd) {
+      seasonToEnd.endDate = new Date();
+      await seasonToEnd.save();
+    }
+
+    const newSeason = new Season({
+      seasonNumber: (seasonToEnd.seasonNumber + 1),
+      communityId: community.id
+    });
+
+    const advancedSeason = await newSeason.save();
+
+    community.seasons.push(advancedSeason.id);
+    community.currentSeason = advancedSeason.id;
+
+    const newsData = {
+      seasonNumber: advancedSeason.seasonNumber,
+      communityId: community.id,
+      type: 'newSeason'
+    }
+
+    await newsService.createNews(newsData);
+    await community.save();
+
+    res.status(200).json({ 
+      message: 'Success',
+      community: community
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Error advancing season' });
+  }
+}
+
+export default {
+  getCommunityAccess, 
+  createCommunity, 
+  getCommunityData, 
+  getAllCommunities, 
+  getUserCommunities, 
+  getCommunityTeams, 
+  getRegisteredPlayers, 
+  getMarketConfig, 
+  advanceSeason
+}
