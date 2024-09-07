@@ -2,19 +2,12 @@ import Community from "../models/Community.js";
 import News from "../models/News.js";
 
 const createNews = async (newsData) => {
-
+    console.log(newsData);
   try {
       const community = await Community.findById(newsData.communityId);
       if (!community) {
           throw new Error("Community not found");
       }
-      console.log('community', community);
-    //   const formattedAmount = new Intl.NumberFormat('es-ES', { 
-    //       style: 'currency', 
-    //       currency: 'EUR',
-    //       minimumFractionDigits: 0, 
-    //       maximumFractionDigits: 0 
-    //   }).format(newsData.transferAmount);
 
       const messageTemplates = {
           transferPurchase: (body) => `${body.buyerName} ha fichado a ${body.playerName}`,
@@ -25,7 +18,13 @@ const createNews = async (newsData) => {
           
           newTournament: (body) => `Un nuevo torneo ha sido creado. Inscribete para participar: ${body.tournamentId}.`,
 
-          newSeason: (body) => `¡Empieza la Temporada ${body.seasonNumber}!`,     
+          newSeason: (body) => `¡Empieza la Temporada ${body.seasonNumber}!`,  
+          
+          bonus: (body) => `${body.message}`,
+
+          penalization: (body) => `${body.message}`,
+
+          other: (body) => `${body.message}`,
       };
       
       const _createMessage = () => {
@@ -47,11 +46,15 @@ const createNews = async (newsData) => {
           transferAmount: newsData.transferAmount,
       };
 
-      const newUserDetails = {
+      const singleTeamDetails = {
           clubName: newsData.clubName,
           clubCrest: newsData.clubCrest,
           teamId: newsData.teamId,
       };
+
+      const budgetAdjustment = {
+          amount: newsData.amount,
+      }
 
       const newTournamentData = {
           tournamentId: newsData.tournamentId,
@@ -64,13 +67,13 @@ const createNews = async (newsData) => {
           createdAt: newsData.createdAt || Date.now(),
       };
 
-      const news = new News({ ...newsDefault, ...transferDetails, ...newUserDetails });
+      const news = new News({ ...newsDefault, ...transferDetails, ...singleTeamDetails, ...budgetAdjustment });
       await news.save();
 
       community.news.push(news.id);
 
       await community.save();
-      return news; // Return the created news document
+      return news;
   } catch (error) {
       throw new Error(error.message);
   }

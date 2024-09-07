@@ -10,6 +10,7 @@ dotenv.config({
 import { corsMiddleware } from './middlewares/cors.js';
 import errorHandler from './middlewares/errorHandler.js';
 
+import budgetRouter from './routes/budgetRoutes.js';
 import clubRouter from './routes/clubRoutes.js';
 import communityRouter from './routes/communityRoutes.js';
 import loginRouter from './routes/loginRoutes.js';
@@ -39,6 +40,7 @@ app.use('/api/teams', teamRouter);
 app.use('/api/tournaments', tournamentRouter);
 app.use('/api/users', userRouter);
 app.use('/api/market', marketRouter);
+app.use('/api/budget', budgetRouter);
 
 app.use(errorHandler);
 

@@ -1,3 +1,4 @@
+import Community from '../models/Community.js';
 import Team from '../models/Team.js';
 import User from '../models/User.js';
 import communityService from '../services/communityService.js';
@@ -7,6 +8,15 @@ import userService from '../services/userService.js';
 const createTeam = async (req, res) => {
   const team = req.body;
   try {
+    const userInCommunity = await Community.findOne({
+      _id: team.communityId,
+      users: team.userId
+    });
+
+    if (userInCommunity) {
+      return res.status(400).json({ error: 'User already exists in the community.' });
+    }
+
     const newTeam = new Team({
       clubId: team.clubId,
       clubName: team.clubName,
@@ -38,9 +48,10 @@ const createTeam = async (req, res) => {
     }
 
     await newsService.createNews(newsData);
-    await newTeam.save();
+    
+    const createdTeam = await newTeam.save();
     await userService.addTeamToUser(team.userId, userTeam);
-    await communityService.joinCommunity(newTeam.userId, newTeam.communityId);
+    await communityService.joinCommunity(newTeam.userId, newTeam.communityId, createdTeam.id);
 
     res.status(201).json(newTeam);
   } catch (error) {

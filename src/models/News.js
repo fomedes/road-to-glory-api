@@ -8,6 +8,7 @@ const newsSchema = new Schema({
     ref: 'Community',
     required: true
   },
+  amount: Number,
   type: { 
     type: String, 
     required: true, 
@@ -16,7 +17,10 @@ const newsSchema = new Schema({
       'newTournament', 
       'transferPurchase', 
       'transferSale', 
-      'newSeason'
+      'newSeason',
+      'bonus',
+      'penalization',
+      'other'
     ]
   },
 

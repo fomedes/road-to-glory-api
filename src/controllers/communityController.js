@@ -43,8 +43,8 @@ const createCommunity = async (req, res) => {
       registeredClubs: communityData.registeredClubs,
       registeredPlayers: communityData.registeredPlayers,
       tournaments: communityData.tournaments,
-      seasons: [firstSeason._id],
-      currentSeason: firstSeason._id,
+      seasons: [firstSeason.id],
+      currentSeason: firstSeason.id,
       news: communityData.news
   });
       await newCommunity.save();
@@ -56,7 +56,9 @@ const createCommunity = async (req, res) => {
 
 const getCommunityData = async (req, res) => {
   try {
-    const community = await Community.findById(req.params.communityId).populate('currentSeason')
+    const community = await Community.findById(req.params.communityId)
+    .populate('currentSeason')
+    .populate('teams')
     .exec();
     if (!community) {
       return res.status(404).json({ error: 'Community not found' });
