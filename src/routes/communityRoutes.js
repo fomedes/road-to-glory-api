@@ -10,7 +10,7 @@ router.post('/create', communityController.createCommunity);
 
 router.get('/all', communityController.getAllCommunities)
 
-router.get('/communityInfo/:communityId', communityController.getCommunityData);
+router.get('/communityData/:communityId', communityController.getCommunityData);
 
 router.get('/userCommunities/:userId', communityController.getUserCommunities);
 

@@ -41,6 +41,7 @@ app.use('/api/tournaments', tournamentRouter);
 app.use('/api/users', userRouter);
 app.use('/api/market', marketRouter);
 app.use('/api/budget', budgetRouter);
+// app.use('/api/tournament', tournamentRouter);
 
 app.use(errorHandler);
 

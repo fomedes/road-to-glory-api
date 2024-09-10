@@ -2,7 +2,6 @@ import Community from "../models/Community.js";
 import News from "../models/News.js";
 
 const createNews = async (newsData) => {
-    console.log(newsData);
   try {
       const community = await Community.findById(newsData.communityId);
       if (!community) {
@@ -16,7 +15,9 @@ const createNews = async (newsData) => {
 
           newUser: (body) => `${body.username} es el nuevo entrenador de ${body.clubName}`,
           
-          newTournament: (body) => `Un nuevo torneo ha sido creado. Inscribete para participar: ${body.tournamentId}.`,
+          newTournament: (body) => `${body.name} acaba de iniciar!`,
+
+        //   newTournament: (body) => `Un nuevo torneo ha sido creado. Inscribete para participar: ${body.tournamentId}.`,
 
           newSeason: (body) => `¡Empieza la Temporada ${body.seasonNumber}!`,  
           
@@ -67,7 +68,8 @@ const createNews = async (newsData) => {
           createdAt: newsData.createdAt || Date.now(),
       };
 
-      const news = new News({ ...newsDefault, ...transferDetails, ...singleTeamDetails, ...budgetAdjustment });
+      const news = new News({ ...newsDefault, ...transferDetails, ...singleTeamDetails, ...budgetAdjustment, ...newTournamentData });
+
       await news.save();
 
       community.news.push(news.id);
@@ -75,6 +77,7 @@ const createNews = async (newsData) => {
       await community.save();
       return news;
   } catch (error) {
+      console.error('News creation error:', error);
       throw new Error(error.message);
   }
 };

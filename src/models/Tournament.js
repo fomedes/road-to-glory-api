@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
 const standingsLeagueSchema = new Schema({
-  teamID: { type: Number, default: 0 },
+  teamID: { type: Schema.Types.ObjectId, ref: 'Team'  },
   points: { type: Number, default: 0 },
   gamesPlayed: { type: Number, default: 0 },
   won: { type: Number, default: 0 },
@@ -17,35 +17,21 @@ const standingsLeagueSchema = new Schema({
 }, { _id: false });
 
 const playerStatsSchema = new Schema({
-  playerID: { type: Number, default: 0 },
+  playerID: { type: String, default: '' },
   goals: { type: Number, default: 0 },
   assists: { type: Number, default: 0 },
   yellowCards: { type: Number, default: 0 },
   redCards: { type: Number, default: 0 },
 }, { _id: false });
 
-const matchSchema = new Schema({
-  teams: {
-    home: { type: String, required: true },
-    away: { type: String, required: true }
-  },
-  matchday:  Number,
-  // date: { type: Date, required: true },
-  status: { type: String, enum: ['pending', 'completed'], default: 'pending' },
-  goals: {
-    home: { type: Number, default: 0 },
-    away: { type: Number, default: 0 }
-  }
-}, { _id: false });
 
 const tournamentSchema = new Schema({
   name: { type: String, required: true },
-  community: {
+  communityId: {
     type: Schema.Types.ObjectId,
     ref: 'Community',
     required: true
   },
-  isFinished: { type: Boolean, default: false },
   income: {
     type: String,
     enum: ['byGame', 'byResult', 'byPlacement'],
@@ -62,8 +48,10 @@ const tournamentSchema = new Schema({
   rewards: [{ type: Number }],
   standingsLeague: [standingsLeagueSchema],
   playerStats: [playerStatsSchema],
-  matches: [matchSchema],
+  matches: [ {type: Schema.Types.ObjectId, ref: 'Match'}],
+  startDate: Date,
   endDate: Date,
+  isFinished: { type: Boolean, default: false },
 });
 
 tournamentSchema.set('toJSON', {

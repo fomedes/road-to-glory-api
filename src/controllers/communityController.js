@@ -58,7 +58,14 @@ const getCommunityData = async (req, res) => {
   try {
     const community = await Community.findById(req.params.communityId)
     .populate('currentSeason')
-    .populate('teams')
+    .populate({
+      path: 'teams',
+      select: 'budget clubCrest clubName id'
+    })
+    .populate({
+      path: 'tournaments',
+      select: 'name'
+    })
     .exec();
     if (!community) {
       return res.status(404).json({ error: 'Community not found' });
