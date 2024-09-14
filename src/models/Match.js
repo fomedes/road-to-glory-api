@@ -58,8 +58,14 @@ const matchSchema = new Schema({
   split: { type: Number, required: true },
   matchday:  { type: Number, required: true },
   match:  { type: Number, required: true },
-  home: { type: String, default: '' },
-  away: { type: String, default: ''  },
+  home: { 
+    type: Schema.Types.ObjectId, 
+    ref: 'Team' 
+  },
+  away: { 
+    type: Schema.Types.ObjectId, 
+    ref: 'Team' 
+  },
   // date: { type: Date, required: true },
   status: { type: String, enum: ['pending', 'completed'], default: 'pending' },
   playerStats: [playerStatsSchema],

@@ -1,8 +1,11 @@
 import Community from "../models/Community.js";
 import Match from "../models/Match.js";
+import Team from "../models/Team.js";
 import Tournament from "../models/Tournament.js";
 import fixturesService from "../services/fixturesService.js";
 import newsService from "../services/newsService.js";
+
+const team = Team
 
 const createTournament = async (req, res) => {
   const session = await Tournament.startSession();
@@ -70,11 +73,9 @@ const getTournamentDetails = async (req, res) => {
     const tournament = await Tournament.findById(tournamentId)
     .populate({
       path: 'matches',
-      populate: {
-        path: 'home away',
-        model: 'Team',
-        select: 'id clubName clubCrest'
-      },
+      model: 'Match',
+      populate: 'home'
+      
     })
     .exec();
     if (!tournament) {
@@ -87,4 +88,19 @@ const getTournamentDetails = async (req, res) => {
   }
 };
 
-export default {createTournament, getTournamentDetails}
+const getMatchById = async (req, res) => {
+  const matchId = req.params.matchId;
+  const match = await Match.findById(matchId)
+  .populate({
+    path: 'home away',
+    model: 'Team',
+    select: 'clubName'
+  })
+  .exec();
+  if (!match) {
+    return res.status(404).json({ error: 'Match not found' });
+  }
+  res.status(200).json(match);
+} 
+
+export default {createTournament, getTournamentDetails, getMatchById}
