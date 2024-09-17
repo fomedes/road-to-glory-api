@@ -43,21 +43,18 @@ const teamSchema = new Schema({
   playerHistoric: [playerHistoricSchema],
 });
 
+teamSchema.virtual('id').get(function() {
+  return this._id.toString();
+});
+
 teamSchema.set('toJSON', {
+  virtuals: true, 
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id;
+    // returnedObject.id = returnedObject._id;
     delete returnedObject._id;
     delete returnedObject.__v;
   }
 });
-
-teamSchema.set('toJSON', {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id
-    delete returnedObject._id
-    delete returnedObject.__v
-  }
-})
 
 teamSchema.plugin(uniqueValidator);
 

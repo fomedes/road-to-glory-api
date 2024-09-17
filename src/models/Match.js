@@ -69,7 +69,7 @@ const matchSchema = new Schema({
   // date: { type: Date, required: true },
   status: { type: String, enum: ['pending', 'completed'], default: 'pending' },
   playerStats: [playerStatsSchema],
-  matchStats: [matchStatsSchema]
+  matchStats: matchStatsSchema
 });
 
 matchSchema.set('toJSON', {

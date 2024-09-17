@@ -38,7 +38,7 @@ const createTournament = async (req, res) => {
       matches
     }).save({ session });
 
-    // Add tournament to community
+    
     community.tournaments.push(newTournament._id);
     await community.save({ session });
 
@@ -49,9 +49,9 @@ const createTournament = async (req, res) => {
       tournamentId: newTournament._id,
       type: 'newTournament',
     };
-    newsService.createNews(newsData, session); // Pass session here
+    newsService.createNews(newsData, session);
 
-    // Commit transaction
+    
     await session.commitTransaction();
 
     res.status(201).json(newTournament);
@@ -74,8 +74,11 @@ const getTournamentDetails = async (req, res) => {
     .populate({
       path: 'matches',
       model: 'Match',
-      populate: 'home'
-      
+      populate: {
+        path: 'home away',
+        model: 'Team',
+        select: 'clubName clubCrest id _id',
+      }
     })
     .exec();
     if (!tournament) {
@@ -88,19 +91,4 @@ const getTournamentDetails = async (req, res) => {
   }
 };
 
-const getMatchById = async (req, res) => {
-  const matchId = req.params.matchId;
-  const match = await Match.findById(matchId)
-  .populate({
-    path: 'home away',
-    model: 'Team',
-    select: 'clubName'
-  })
-  .exec();
-  if (!match) {
-    return res.status(404).json({ error: 'Match not found' });
-  }
-  res.status(200).json(match);
-} 
-
-export default {createTournament, getTournamentDetails, getMatchById}
+export default {createTournament, getTournamentDetails}
