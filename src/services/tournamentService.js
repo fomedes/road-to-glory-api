@@ -79,6 +79,8 @@ const sortStandings = (standings) => {
       return a.gamesPlayed - b.gamesPlayed;
     } else if (a.won !== b.won) {
       return b.won - a.won;
+    } else if (a.goalDifference !== b.goalDifference) {
+      return b.goalsFor - a.goalsFor;
     } else if (a.goalsFor !== b.goalsFor) {
       return b.goalsFor - a.goalsFor;
     } else if (a.goalsAgainst !== b.goalsAgainst) {
