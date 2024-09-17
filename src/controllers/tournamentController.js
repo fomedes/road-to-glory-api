@@ -28,6 +28,8 @@ const createTournament = async (req, res) => {
     const newMatches = await Match.insertMany(leagueFixtures, { session });
     const matches = newMatches.map(match => match._id);
 
+    const standingsLeague = teams.map(teamId => ({ team: teamId }));
+
     // Create tournament
     const newTournament = await new Tournament({
       name,
@@ -35,7 +37,8 @@ const createTournament = async (req, res) => {
       tournamentType,
       startDate,
       teams,
-      matches
+      matches,
+      standingsLeague
     }).save({ session });
 
     
@@ -79,6 +82,11 @@ const getTournamentDetails = async (req, res) => {
         model: 'Team',
         select: 'clubName clubCrest id _id',
       }
+    })
+    .populate({
+      path: 'standingsLeague.team',
+      model: 'Team',
+      select: 'clubName clubCrest id _id',
     })
     .exec();
     if (!tournament) {

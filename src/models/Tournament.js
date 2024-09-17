@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
 const standingsLeagueSchema = new Schema({
-  teamID: { type: Schema.Types.ObjectId, ref: 'Team'  },
+  team: { type: Schema.Types.ObjectId, ref: 'Team'  },
   points: { type: Number, default: 0 },
   gamesPlayed: { type: Number, default: 0 },
   won: { type: Number, default: 0 },
@@ -17,7 +17,7 @@ const standingsLeagueSchema = new Schema({
 }, { _id: false });
 
 const playerStatsSchema = new Schema({
-  playerID: { type: String, default: '' },
+  playerId: { type: String, default: '' },
   goals: { type: Number, default: 0 },
   assists: { type: Number, default: 0 },
   yellowCards: { type: Number, default: 0 },
